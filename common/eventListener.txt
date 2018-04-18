@@ -14,3 +14,7 @@
 14、问诊结束—不保存问诊结果按钮   x
 15、诊断结果页面—意见反馈 按钮    id:inquiry_click_freeback
 16、问诊结束—反馈提交按钮  id:feedback_click_submitFeedback
+//by zqy
+a.解决键盘调起事件，已经修改inquiry的布局
+b.修改样式类似饿了么加入购物车的效果，修改symptom
+c.新增home整个文件夹，这个是方便写效果的demo

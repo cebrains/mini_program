@@ -1,0 +1,39 @@
+<view class="container" id="feedback" style="background:#f5f5f5;">
+    <view class='title'>
+        —— 给我们的AI小智打个分吧 ——
+    </view>
+
+    <!-- 评星 -->
+    <view class='star' wx:if="{{start && start.length>0}}">
+        <text class="icon-star icon {{index<=starNum-1?'active':''}}" wx:for="{{start}}" wx:key="{{index}}" bindtap="setStar" data-idx="{{index}}"></text>
+    </view>
+
+    <!-- 标签 -->
+    <view class='tagGroup clearfix'>
+        <view class="fll tag {{item.checked?'active':''}}" wx:for="{{tag}}" wx:key="{{index}}" bindtap='selectTag' data-idx="{{index}}">
+            <text class="{{item.icon}}{{item.checked?'2':''}}"></text>
+            {{item.text}}
+        </view>
+    </view>
+
+    <!-- 输入框 -->
+    <view class='input'>
+        <textarea bindblur="completeInput"  maxlength='-1' placeholder="您的反馈，对我们产品的提升极其重要，欢迎留下您的意见！！！我们定期会为我们的用户发送奖品哟！" placeholder-style='color:rgba(42,63,84,.2)' name='textarea' />
+    </view>
+
+    <view class='sn'>
+        <view class='snText'>{{SN==''?date:SN}}</view>
+        <view class='snBtn {{snDisabled ? "disabled":""}}' bindtap='clickSNBtn'>SN</view>
+    </view>
+
+    <!-- 提交 -->
+    <view class="subBtn positR" wx:if="{{allowSubmit}}" id='feedback_click_submitFeedback' bindtap="clickSubBtn">
+        <view class='imgWrap'>
+            <image src='../../images/btnBg.jpg'></image>
+        </view>
+        <view class='imgCont'>
+            提交
+        </view>
+    </view>
+    <view class="subBtn" wx:else id='feedback_click_submitFeedback' bindtap="clickSubBtn">提交</view>
+</view>

@@ -1,0 +1,79 @@
+/*drugScheme.wxss by zqy*/
+
+.clearfix:before,.clearfix:after { 
+    content:"";
+    display:table;
+}
+.clearfix:after{clear:both;}
+.clearfix{
+    zoom:1;
+}
+.left{
+	float:left;
+}
+.right{
+	float:right;
+}
+.drug_scheme_careful{
+  height:78rpx;
+  background: #FEF3E9;
+  padding:16rpx 54rpx;
+}
+.drug_scheme_careful view{
+  color: #F58B23;
+   font-size:24rpx; 
+}
+.drug_scheme_contant{
+  padding:0 40rpx;
+  margin-top:26rpx;
+}
+.drug_scheme_title{
+  color:#666;
+  font-size:60rpx;
+  margin-bottom:34rpx;
+}
+.no_drug_scheme_title{
+  margin-bottom:0;
+  text-align:center;
+  line-height:100rpx;
+  font-size:32rpx;
+}
+.pathogeny_title,.disease_title{
+  margin-bottom:36rpx;
+}
+.pathogeny_tit_txt_bg,.disease_tit_txt_bg{
+  background:#41B8B0;
+  font-size:32rpx;
+  color:#fff;
+  margin-right:12rpx;
+  border-radius:8rpx;
+  width:86rpx;
+  height:42rpx;
+  line-height:42rpx;
+  text-align:center;
+}
+.disease_tit_txt_bg{
+  background:#3D83B8;
+}
+.pathogeny_tit_right{
+  color:#999;
+  font-size:24rpx;
+}
+.pathogeny_list{
+  max-height:160rpx;
+  width:90%;
+  background:#F4F8FB;
+  color:#244E6E;
+  border-radius:8rpx;
+  padding:16rpx 30rpx;
+  font-size:26rpx;
+  margin-bottom:40rpx;
+}
+.pathogeny_list view{
+    margin-bottom:14rpx;
+}
+.drag_name_item{
+  font-size:30rpx;
+  font-weight:bold;
+}
+

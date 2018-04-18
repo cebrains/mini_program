@@ -1,0 +1,16 @@
+1、协议条款—同意   x
+2、开始问诊 按钮   x
+3、查问诊记录按钮   x
+4、测评记录详情-查看    id:records_enter_recoreDetailPage 
+5、测评记录详情-删除    id:recordDetail_click_delete
+6、文本输入—发送   x
+7、通过症状列表选择—完成   id:symptom_click_sure   
+8、化验结果—确认      id:inquiry_click_sureLab
+9、化验结果—未做过以上化验      id:inquiry_click_cancelLab
+10、诊断结果 x
+11、诊断结果卡片查看—疾病预测排行  id:inquiry_click_diagnoseCard
+12、诊断结果卡片查看—疾病预测排行—疾病介绍     
+13、问诊结束—保存问诊结果按钮    x
+14、问诊结束—不保存问诊结果按钮   x
+15、诊断结果页面—意见反馈 按钮    id:inquiry_click_freeback
+16、问诊结束—反馈提交按钮  id:feedback_click_submitFeedback

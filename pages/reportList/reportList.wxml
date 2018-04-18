@@ -1,0 +1,82 @@
+<!--reportList.wxml-->
+<view class="container" style='background:#fff;'>
+    <!-- 癌症预警 -->
+    <view class="recall" wx:if="{{ isRecall }}">
+        <view class="recall-icon">
+            <text class="icon icomoon icon-yujing" style="margin-right:20rpx;"></text>
+        </view>
+        <view>
+            {{recallDetail}}
+        </view>
+    </view>
+
+    <!-- 第一疾病 -->
+    <view class="num1" style="margin-top:{{isRecall?'106rpx':'0'}}">
+        <view class="disease positR" data-id="{{num1.id}}" bindtap="enterWiki" id='reportList_click_enterWiki_no1'>
+            <view class='imgWrap'>
+                <image src="../../images/reportBg1.png"></image>
+            </view>           
+            <view class='imgCont'>
+                <view class="clearfix">
+                    <view class="name ell left">
+                         <view>{{num1.name}}</view> 
+                        <!-- <text class='icon-unfolded'></text> -->
+                    </view> 
+                    <view class="right use_scheme_text clearfix" catchtap='toDrugSchemePage' data-id="{{num1.id}}" data-name="{{num1.name}}">
+                      <view class='left' style="width:27%;"> 
+                          <image src="../../images/drugsIcon2.svg" style='width:18rpx;height:26rpx;margin-top:13rpx;'></image> 
+                      </view> 
+                      <view class='left'>用药方案</view>
+                    </view>
+                </view>
+                              
+                <view class="weight">{{num1.weight}}%</view>
+                <view class="depName ell" wx:if="{{num1.departmentId && num1.departmentId!=''}}" style="">建议科室：{{num1.departmentName}}</view>
+                <view class='drug ell' wx:if="{{num1.drugPlans && num1.drugPlans.length>0}}">推荐用药：{{num1.drugPlans}}</view>
+                <view class="describe">wiki：{{num1.describe}}</view>
+            </view>
+
+        </view>
+    </view>
+
+    <!-- 疾病列表 -->
+    <view class="list">
+        <view class='title pad40'>
+            <text class='icon-paixu'></text>
+            <view style='margin-left:12rpx'>其它低概率疑似疾病</view>
+        </view>
+        <view wx:for="{{report}}" wx:key="id" class="disease-wrap"> 
+             <template is="diseaseList" data="{{item}}"></template> 
+        </view>
+    </view>
+
+    <!-- 底部logo -->
+    <view style="width:364rpx;height:44rpx;margin:60rpx auto;">
+        <image src="../../images/sy.png" style="width:100%;height:100%;"></image>
+    </view>
+
+</view>
+
+<!---------------- 组件模版 ----------------->
+ <template name="diseaseList">
+    <view class="disease" data-id="{{item.id}}" bindtap="enterWiki" id="reportList_click_enterWiki_no2">
+        <view class='diseaseTitle clearfix'>
+            <view class="weight left">{{item.weight}}%</view>
+            <view class="name ell left">{{item.name}}</view>
+            <!--add 用药方案 by zqy  -->
+            <view class='right use_scheme_text_in_list clearfix' catchtap="toDrugSchemePage" data-id="{{item.id}}" data-name="{{item.name}}">
+              <view class='left' style="width:27%;"> 
+                  <image src="../../images/drugsIcon.svg" style='width:18rpx;height:26rpx;margin-top:13rpx;'></image> 
+              </view> 
+              <view class='left'>用药方案</view>
+            </view>
+        </view>
+        <view class="describe">
+            <view style='width:95%'>
+                <view class='drug ell' wx:if="{{item.drugPlans && item.drugPlans.length>0}}">推荐用药：{{item.drugPlans}}</view>
+                <view class='text'>wiki：{{item.describe}}</view>
+            </view>
+            <text class='icon-unfolded icon'></text>
+        </view>
+    </view>
+</template>

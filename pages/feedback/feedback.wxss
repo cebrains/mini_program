@@ -1,0 +1,114 @@
+#feedback {
+    padding: 40rpx;
+    color: #2a3f54;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#feedback .title {
+    height: 140rpx;
+    line-height: 100rpx;
+    text-align: center;
+    color: rgba(42, 63, 84, 0.6);
+}
+
+#feedback .star {
+    width: 400rpx;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 60rpx;
+    color: rgba(42, 63, 84, 0.2);
+    margin-bottom: 70rpx;
+}
+
+#feedback .star text.active {
+    color: #ffcc01;
+}
+
+#feedback .tagGroup .tag {
+    padding: 0 20rpx;
+    background: #fff;
+    border-radius: 40rpx;
+    height: 70rpx;
+    line-height: 70rpx;
+    margin-right: 20rpx;
+    margin-bottom: 40rpx;
+    border: 1rpx solid #fff;
+    color: rgba(42, 63, 84, 0.6);
+}
+
+#feedback .tagGroup .tag.active {
+    color: #41b8b0;
+    border: 1rpx solid #41b8b0;
+}
+
+/* 输入框 */
+#feedback .input {
+    width: 100%;
+    height: 347rpx;
+    padding: 20rpx;
+    margin-top: 60rpx;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 40rpx;
+    overflow: hidden;
+}
+
+#feedback textarea {
+    width: 100%;
+    height: 100%;
+    font-size: 28rpx;
+    margin: 0 auto;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+#feedback .subBtn {
+    width: 100%;
+    height: 100rpx;
+    line-height: 100rpx;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 36rpx;
+    background: rgba(31, 31, 31, 0.1);
+    color: #fff;
+    position: absolute;
+    bottom: -5rpx;
+    left: 0rpx;
+    right: 0rpx;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+#feedback .sn {
+    margin-top: 30rpx;
+    height: 60rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 28rpx;
+    padding: 0 20rpx;
+}
+
+#feedback .sn .snText {
+    color: rgba(196, 205, 212, 0.5);
+}
+
+#feedback .sn .snBtn {
+    width: 118rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    text-align: center;
+    background: #fefefe;
+    color: rgba(42, 63, 84, 0.6);
+    border-radius: 40rpx;
+}
+
+#feedback .sn .snBtn.disabled {
+    background: rgba(236, 237, 238, 1);
+    color: rgba(198, 203, 209, 0.5);
+}

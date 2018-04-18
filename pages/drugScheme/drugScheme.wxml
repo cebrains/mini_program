@@ -1,0 +1,83 @@
+<!--reportList.wxml-->
+<view class="drug_scheme" style='background:#fff;'>
+	 <!-- 注意 -->
+	<view class="drug_scheme_careful clearfix">
+		 <view class='left' style="width:10%;"> 
+        <image src="../../images/broadcast.svg" style='width:40rpx;height:32rpx;margin-top:16rpx;'></image> 
+     </view> 
+		<view class='left' style="width:90%;">为了您更好的康复，需要针对疾病和疾病引发的症状同时用药才能达到更好的疗效哦！</view>
+	</view>
+  <view class="drug_scheme_contant">
+    <!-- 标题 -->
+    <view class="drug_scheme_title">{{titleName}}</view>
+    <!-- 病因 -->
+    <view class="pathogeny">
+        <view class="pathogeny_title clearfix">
+            <view class="left pathogeny_tit_txt_bg">病因</view>
+            <view class="left" style="font-size:32rpx">治疗</view>
+            <view class="right pathogeny_tit_right">(共<text>{{pathogenyArr.length}}</text>个)</view>
+        </view>
+        <view wx:if="{{showNoPlansPathogeny==false}}">
+          <view class="pathogeny_list" wx:for="{{pathogenyArr}}" wx:key="index" >
+            <view class="drag_name_item">{{item.name}}</view>           
+            <view wx:for="{{item.indications}}" wx:key="index">                
+                <view wx:if="{{item.type =='EntityTypeDisease'}}">
+                  <text>适用病因：</text>                  
+                  <text >{{item.name}}</text>
+                </view>
+            </view>
+            <!--判断适用病症是否有数据 (病因) -->
+             <view>
+              <view wx:for="{{item.indications}}" wx:for-item="indications" wx:key="index">                             
+                  <view wx:if="{{indications.type =='EntityTypeSymptom'}}">
+                    <text>针对症状：</text> 
+                    <text>{{indications.name}}</text>
+                    <text wx:if="{{index==item.indications.length-1}}"></text>
+                    <text wx:else style="margi-left:10rpx;margin-right:14rpx">|</text>
+                  </view>                 
+              </view>                  
+            </view>
+            <!--end  -->
+          </view>
+        </view>       
+         <view class="pathogeny_list" wx:else>
+            <view class="no_drug_scheme_title">暂无用药方案</view>
+        </view> 
+    </view>
+    <!-- 病症 -->
+    <view class="disease">
+        <view class="disease_title clearfix">
+            <view class="left disease_tit_txt_bg">病症</view>
+            <view class="left" style="font-size:32rpx">治疗</view>
+            <view class="right pathogeny_tit_right">(共<text>{{diseasePlanArr.length}}</text>个) </view>
+        </view>
+        <view wx:if="{{showNoPlansDisease==false}}">
+           <view class="pathogeny_list" wx:for="{{diseasePlanArr}}" wx:key="index">
+            <view class="drag_name_item">{{item.name}}</view>
+            <view wx:for="{{item.indications}}" wx:key="index">
+              <view wx:if="{{item.type =='EntityTypeDisease'}}">
+                <text>适用病因：</text>
+                <text >{{item.name}}</text>
+              </view>
+            </view>
+           <!--判断适用病症是否有数据 (病症) -->
+            <view class='clearfix'>
+              <text class='left'>针对症状：</text>
+              <view  class="left" wx:key="index" wx:for="{{item.indications}}" wx:for-item="indications">  
+                  <view wx:if="{{indications.type =='EntityTypeSymptom'}}">{{indications.name}}                
+                    <text wx:if="{{index==item.indications.length-1}}"></text>
+                    <text wx:else style="margi-left:10rpx;margin-right:14rpx">|</text>
+                  </view>                 
+              </view>                  
+            </view>
+            <!-- end -->
+          </view>
+        </view>      
+         <view class="pathogeny_list" wx:else>
+            <view class="no_drug_scheme_title">暂无用药方案</view>
+        </view> 
+    </view>
+    <!--end 病症  -->
+  </view>
+  <!--end contant  -->
+</view>

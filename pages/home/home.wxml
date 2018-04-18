@@ -1,0 +1,18 @@
+
+<view class='home-warp'>
+  <!--问候  -->
+  <view class='home-head animated slideInDown'>
+      <view class='as-img' animation="{{img2Small}}"></view>
+      <view animation="{{change2Card}}" class="{{isAfterCard?'after-as-card':'as-card'}}">
+        <view>HI,TEST,</view>
+        <view>有什么可以帮助您的？</view>
+      </view>    
+  </view>
+  <!--输入 -->
+  <view class="animated home-section {{isDown?'fadeInDown':'fadeInUp'}}" animation="{{change2Bottom}}" >
+      <input placeholder="这是一个可以自动聚焦的input" bindfocus='onStart'/>
+  </view>
+  <!-- <view class="grad">渐变shadow</view>  -->
+  <view class="animated {{isShowSymptom?'after-home-symptom-btn fadeInLeft':'home-symptom-btn'}}"> 通过列表输入症状</view> 
+ </view>
+ 

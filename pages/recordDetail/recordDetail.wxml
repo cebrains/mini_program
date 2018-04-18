@@ -1,0 +1,52 @@
+<!--records.wxml-->
+<view class="container" id="recordDetail">
+    <view class='card'>
+          <view class='pad40 cont'  style='height:{{cardState?"auto":"440rpx"}};padding-bottom:10rpx;'>  
+         <!-- <view class='pad40 cont {{cardState?"cardHide":"cardShow"}}' >  -->
+            <view class="basic">
+                <template is='cardList' data="{{title:'基本信息',detail:basic,type:'basic'}}"></template>
+            </view>
+            <view class="time">
+                <template is='cardList' data="{{title:'时间',detail:time}}"></template>
+            </view>
+            <view class='symptoms'>
+                <template is='cardList' wx:for="{{symptoms}}" wx:key='index' data="{{title:item.category,detail:item.detail}}"></template>
+            </view>
+            <view class='lab'>
+                <template is='cardList' data="{{title:'化验结果',detail:labItems}}"></template>
+            </view>
+        </view>
+        <view class='toggleBtn' bindtap='toggleCard'>
+            <text>{{cardState?'收起 ':'展开 '}}</text>
+            <text class='{{cardState?"icon-shang":"icon-xia"}}'></text>
+        </view>
+    </view>
+    <view class='result'>
+        <view class='title pad40'>诊断结果</view>
+        <view class='diagnoseList pad40'>
+            <view class="list" wx:for="{{diagnoses}}" wx:key="index" data-id="{{item.id}}" bindtap='clickResultLi'>
+                <view class='info'>
+                    <view class='weight'>{{item.weight}}%</view>
+                    <view class='name ell'>{{item.text}}</view>
+                </view>
+                <view class='icon-unfolded icon'></view>
+            </view>
+        </view>
+    </view>
+    <view class="divider"></view>
+    <view class='deleteBtn' bindtap='clickDelete' data-id="{{id}}" id='recordDetail_click_delete'>
+        删除
+    </view>
+    <view class="divider"></view>
+</view>
+
+<template name="cardList">
+    <view class='cardList'>
+        <view class='title'>{{title}}</view>
+        <view class='detail' >
+            <view class="detailList {{type=='basic'?'ell':''}}" wx:for="{{detail}}" wx:key="index">
+                {{item}}
+            </view>
+        </view>
+    </view>
+</template>

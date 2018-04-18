@@ -1,0 +1,44 @@
+<!--index.wxml-->
+<view class="container" style='background:#fff;'>
+    <view class="pageTitle pad40" style="">
+        <view class='diseaseName'>{{name}}</view>
+
+        <view class='drug positR' wx:if="{{drugPlans.length>0}}">
+            <view class='imgWrap'>
+                <image src="../../images/wikiBg.png"></image>
+            </view>
+            <view class='imgCont'>
+                <view class='title'>
+                    <view class='text'>推荐用药</view>
+                </view>
+                <view class='detail'>
+                    <view class='drugDetail' wx:for="{{drugPlans}}" wx:key="{{index}}">
+                        <text wx:if="{{drugPlans.length>1}}">方案{{index+1}}：</text>
+                        <text style="width:{{drugPlans.length>1?'80%':'100%'}}">{{item}}</text>
+                    </view>
+                </view>
+            </view>
+
+        </view>
+    </view>
+    <view>
+        <view class='listName pad40'>疾病相关wiki</view>
+        <view wx:for="{{wiki}}" wx:key="{{index}}">
+            <template is="list" data="{{...item,idx:index}}"></template>
+        </view>
+    </view>
+</view>
+
+<template name='list'>
+    <view class="list pad40">
+        <view class="title" bindtap="clickTitle" data-idx="{{idx}}">
+            <view class="text">{{title}}</view>
+            <view class="icon">
+                <text class="icon icomoon {{show?'icon-shang':'icon-xia'}}"></text>
+            </view>
+        </view>
+        <view class="describe" style="height:{{show?'auto':'0'}};padding-bottom:{{show?'20rpx':'0'}}">
+            {{describe}}
+        </view>
+    </view>
+</template>

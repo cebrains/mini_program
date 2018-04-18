@@ -1,0 +1,120 @@
+/*recordDetail.wxss*/
+
+#recordDetail {
+    width: 100%;
+    min-height: 100%;
+    font-size: 32rpx;
+    background: #f5f5f5;
+}
+
+.card {
+    background: #fff;
+}
+
+.card .cont {
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+.card .basic {
+    border-bottom: 1rpx solid #eaeaea;
+    height: 100rpx;
+    line-height: 100rpx;
+}
+
+.card .cardList {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 16rpx;
+}
+
+.card .cardList .title {
+    width: 28%;
+    color: #737373;
+}
+
+.card .cardList .detail {
+    width: 72%;
+    color: #000;
+}
+
+.card .cardList .detail .detailList {
+    margin-bottom: 20rpx;
+}
+
+.card .diagnose {
+    padding-top: 40rpx;
+}
+
+.card .toggleBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100rpx;
+    color: #41b8b0;
+    border-top: 1rpx solid #eaeaea;
+}
+
+.result .title {
+    height: 100rpx;
+    line-height: 100rpx;
+    background: #f5f5f5;
+    color: #888;
+    padding: 0 40rpx;
+}
+
+.result .diagnoseList {
+    background: #fff;
+}
+
+.result .diagnoseList .list {
+    height: 100rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: #3d83b8;
+    border-bottom: 1rpx solid #eaeaea;
+}
+
+.result .diagnoseList .list .info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 90%;
+}
+
+.result .diagnoseList .list .weight {
+    font-size: 28rpx;
+    padding: 0rpx 20rpx;
+    margin-right: 20rpx;
+    border: 2rpx solid rgba(61, 131, 184, 0.4);
+    border-radius: 38rpx;
+    width: 20%;
+    text-align: center;
+}
+
+.result .diagnoseList .list .name {
+    width: 80%;
+}
+
+.result .diagnoseList .list icon {
+    width: 20%;
+    text-align: right;
+}
+
+.deleteBtn {
+    width: 100%;
+    height: 100rpx;
+    line-height: 100rpx;
+    background: #fff;
+    color: #d13447;
+    text-align: center;
+}
+
+.divider {
+    width: 100%;
+    height: 100rpx;
+    background: #f5f5f5;
+}

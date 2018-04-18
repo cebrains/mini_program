@@ -1,0 +1,75 @@
+page{
+  height:100%;
+  background:#f5f5f5;
+  position:relative;
+}
+.home-warp{
+  padding:10rpx 20rpx;
+  
+}
+.home-head{
+  text-align:center;
+  height:400rpx;
+  line-height:100rpx;
+  margin-top:-30rpx;
+}
+.as-img{
+  width:100rpx;
+  height:100rpx;
+  border-radius:50%;
+  border:1rpx solid #000;
+  margin:50rpx auto;
+  position:relative; 
+}
+.as-card{
+  position:relative;
+}
+.after-as-card{
+  text-align:left;
+  line-height:80rpx;
+  padding:20rpx;
+  position:relative;
+}
+.home-section{
+  height:100rpx;
+  text-align:center;
+  position:fixed; 
+  width:100%;
+}
+.home-section input{
+  width:88%;
+  background:#fff;
+  height:60rpx;
+  border-radius:10rpx;
+  font-size:28rpx;
+  text-align:left;
+  padding:10rpx 20rpx;
+}
+/*渐变  */
+.grad {
+  margin-top:100rpx;
+  width:200rpx;
+  height: 80rpx;
+  font-size:16rpx;
+  background: -webkit-linear-gradient(left, gray , yellow); /* Safari 5.1 - 6.0 */
+  box-shadow: 0 6rpx 30rpx 4rpx blue;
+  /* box-shadow: 0rpx 4rpx 15rpx #ccc; 下方才有阴影 */
+}
+.home-symptom-btn{
+  left:-330rpx;
+  position:absolute;
+}
+.after-home-symptom-btn{
+  width:300rpx;
+  height:50rpx;
+  line-height:50rpx;
+  font-size:28rpx;
+  border-radius:20rpx;
+  border:1rpx solid blue;
+  background:#fff;
+  color:blue;
+  left:30rpx;
+  position:absolute;
+  bottom:150rpx;
+  padding:2rpx 10rpx;
+}

@@ -1,0 +1,44 @@
+<!--records.wxml-->
+<view class="container" id="records">
+    <scroll-view scroll-y="true" style="height:100%" bindscrolltolower="scrollToLower" wx:if="{{list.length>0}}">
+        <view wx:for="{{list}}" wx:key="{{index}}">
+            <template is="list" data="{{date:item[0],list:item[1]}}"></template>
+        </view>
+    </scroll-view>
+    <view class="noList" wx:else>
+        你还没有记录，赶快去测评吧
+    </view>
+
+    <!-- <template is='loading' wx:if="{{isLoading}}"></template> -->
+
+</view>
+
+<template name="list">
+    <view class="listWrap">
+        <view class="time positR">
+            <view class='imgWrap'>
+                <image src='../../images/recordsCir.png'></image>
+            </view>
+            <view class='imgCont'>
+                <view class="day">{{date.day}}</view>
+                <view class="month">{{date.month}}月</view>
+            </view>
+
+        </view>
+        <view>
+            <view class="rightList" wx:for="{{list}}" wx:key="{{index}}" bindtap="clickList" data-id="{{item.id}}" data-time="{{date.year+'年'+date.month+'月'+date.day+'日'}}" data-age="{{item.age}}" data-gender="{{item.gender}}" id="records_enter_recoreDetailPage">
+                <view class="title">
+                    <view class="nickname ell" style="max-width:40%">{{item.nickname}}</view>
+                    <view class="gender">{{item.gender}}</view>
+                    <view class="age">{{item.age}}</view>
+                </view>
+                <view class="describe ell">
+                    {{item.describe}}
+                </view>
+                <view class="disease ell">
+                    {{item.diagnose}}
+                </view>
+            </view>
+        </view>
+    </view>
+</template>

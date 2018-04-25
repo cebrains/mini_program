@@ -1,0 +1,399 @@
+<!--main.wxml-->
+<view class="container com-pad" id="inquiry" style="overflow:hidden">
+    <!-- 问诊流 -->
+    <view class="dialog-wrap " style="bottom:{{footerHeight}}">
+        <scroll-view scroll-y scroll-into-view="{{toView}}" scroll-with-animation='true' style='height:100%;'>
+            <!-- <scroll-view scroll-y scroll-into-view="{{toView}}"  style='height:100%;'> -->
+            <!--对话-->    
+            <view class="scroll-cont" wx:for="{{dataList}}" wx:key="index">
+                <!-- <view class="scroll-cont" id="dialog{{index}}" wx:for="{{dataList}}" wx:key="index"> -->
+                <view id="dialog{{item.sn}}">
+                    <template is='robot' wx:for='{{item.stems}}' wx:for-index="idx" wx:for-item='val' wx:key="idx" data="{{stems:val,sn:item.sn}}"></template>
+                </view>
+                <view id="dialog{{item.sn+1}}">
+                    <template is='patient' data="{{answer:item.answer,index,datalistLen:dataList.length,networkErr}}" wx:if='{{item.answer.length>0}}'></template>
+                </view>
+            </view>
+            <!-- btn 结束问诊 -->
+            <view class='end_inquiry_btn_wrap' bindtap='showMaskEndInquiry' wx:if="{{showEndFormRight}}">
+		        <view class="end_inquiry_btn clearfix">
+                <view class='left' style="width:30%;"> 
+                    <image src="../../images/toRight.svg" style='width:26rpx;height:22rpx;margin-top:14rpx;'></image> 
+                </view> 		            
+		            <view class='end_inquiry_text left'>结束问诊</view>
+		        </view>
+		    </view>
+        </scroll-view>
+    </view>
+	
+    <!-- 底部选项区 -->
+    <view class="footer12" style="height:{{footerHeight}};transition:.4s" wx:if="{{!labModal}}">
+        <view class="optionsWrap">
+
+            <!-- 自由文本输入 -->
+             <!-- <template is='footerFreeText' data="{{options,freeInpDisabled,freeTextVal}}" wx:if="{{optionType=='FreeText' || optionType=='AskSymptoms'}}"></template>  -->
+
+            <!-- 只有一个选项 -->
+            <!-- <template is='footerSingleOpt' data="{{options}}" wx:elif="{{options.length==1 && optionType=='TextOptions'}}"></template> -->
+
+            <!-- 两个选项 -->
+            <!-- <template is='footerTwoOpt' data="{{options}}" wx:elif="{{options.length==2 && optionType=='SaveOptions'}}"></template> -->
+
+            <!-- 单选 -->
+            <!-- <template is='footerPicker' data="{{options,defaultValue:pickerDefaultValue}}" wx:elif="{{options.length>0 && optionType=='TextOptions' }}"></template> -->
+
+            <!-- 横向滚动 -->
+            <!-- <template is="footerScroll" data="{{options}}" wx:elif="{{optionType=='ImageOptions'}}"></template> -->
+
+        </view>
+
+    </view>
+
+    <template is='loading' wx:if="{{loadingShow}}"></template>
+    <template is="labItem" data="{{options,labModal}}"></template>
+    <template is='protocol' wx:if="{{showProtocol}}"></template>
+    <template is='saveNickModal' wx:if="{{saveNickModal}}"></template>
+    <template is='errorMsg' wx:if="{{showErrorMsg}}" data="{{errorMsg}}"></template>
+    <!-- 遮罩层 结束问诊 -->
+    <template is='end_inquiry_mask' wx:if="{{showMask}}"></template>
+    <!--填写信息  -->
+    <template is='essentialnformation' data="{{sliderVal,controls,currentSexy,showSignFlag,inputHeightVal}}"></template>
+</view> 
+
+<!------------------------组件--------------------------->
+<!-- 遮罩层 结束问诊-->
+<template name="end_inquiry_mask">
+    <view class="end_the_inquiry_mask">
+    		<view class="end_contant">
+	       	<view class="end_contant_title">提前结束问诊</view>
+	       	<view class="end_contant_tip">您确认提前结束问诊，获得当前问诊结束吗？</view>
+	       	<view class="end_contant_footer clearfix">
+	       		<text class="end_cancel left" bindtap="cancelEndInquiry">取消</text>
+	       		<text class="end_sure right" bindtap="EndInquiry">结束问诊</text>
+	       	</view>
+       	</view>
+    </view>
+</template>
+<!-- loading -->
+<template name="loading">
+    <view class='loading'>
+        <view class='mask'></view>
+        <view class="loadingImg">
+            <image src="../../images/loading.svg" style="width:100rpx;height:100rpx;"></image>
+        </view>
+    </view>
+</template>
+
+<!--机器人气泡-->
+<template name="robot">
+    <view class="inquiry-robot dialog">
+        <view class='dialogCard' wx:if="{{stems.type != 'Diagnosis' || !stems.hasDiagnose}}">
+            <view class="header-img">
+                <image src="../../images/robot.png" background-size="cover"></image>
+            </view>
+            <view class="topic" wx:if="{{stems.type!='Image'}}">
+                <!--问诊上显示的btn  -->
+                <view class="click-btn-text" bindtap='showMaskFromBottom'>点击填写</view>
+                <view class="text">
+                    <view class="comPad">{{stems.stem}}</view>                   
+                    <!-- <view wx:if="{{stems.action && stems.action.length>0}}" wx:for="{{stems.action}}" wx:key="index">
+                        <view class="command {{stems.finish?'finish':''}}" data-commandid="{{item.commandId}}" data-type="{{item.type}}" bindtap='clickCommand' data-finish='{{stems.finish}}' data-text='{{item.text}}' wx:if="{{item.text != '结束问诊'}}">
+                            <text class='icon-putaway'></text>                            
+                            <text>{{item.text}}</text>
+                        </view>
+                         <view wx:else></view> 
+                    </view> -->
+                </view>
+            </view>
+
+            <!-- <view wx:else class="topic dialogImg">
+                <view class='imgWrap'>
+                    <image src='{{stems.stem}}'></image>
+                </view>
+            </view> -->
+        </view>
+
+        <!-- 诊断结果 -->
+        <view class="diagnoseCard" wx:if="{{stems.hasDiagnose && stems.type=='Diagnosis'}}">
+            <view class='text pad3'>您可能患有的疾病如下：</view>
+            <view bindtap='clickDiagnoseCard' data-id="{{stems.disease.id}}" id='inquiry_click_diagnoseCard' data-sn="{{sn}}">
+                <!-- <view class='result pad3' style='background:url(../../images/card_bj.png);background-size: 100% 100%;'> -->
+                <view class='result pad3'>
+                    <view class='imgWrap'>
+                        <image src='../../images/card_bj.png'></image>
+                    </view>
+                    <view class='imgCont'>
+                        <view class='name ell'>{{stems.disease.name}}</view>
+                        <view class='weight'>
+                            <view style='margin-right:20rpx;'>{{stems.disease.weight}}%</view>
+                            <view style='color:rgba(255,255,255,.8)'>查看详请 >></view>
+                        </view>
+                        <view class='department' wx:if="{{stems.disease.departmentId}}">推荐科室：{{stems.disease.departmentName}}</view>
+                    </view>
+
+                </view>
+                <view class='drug pad3' wx:if="{{stems.disease.drugPlans.length>0}}">
+                    <view class='title'>推荐用药</view>
+                    <view class='ell text' wx:for="{{stems.disease.drugPlans}}" wx:key="index">方案{{index+1}}:{{item}}</view>
+                </view>
+                <view class='recall ell pad3' wx:if="{{stems.isRecall}}">
+                    {{stems.recallInfo.title}}
+                </view>
+            </view>
+            <!--by zqy add 用药方案  -->
+            <view>{{id}}</view>
+            <view class='freeback pad3' bindtap='clickTodrugPlans' id='inquiry_click_freeback' style="border-bottom:1rpx solid #D8D8D8;" data-id="{{stems.disease.id}}" data-name="{{stems.disease.name}}">
+                <text class='icon-putaway'></text>
+                用药方案
+            </view>
+            <view class='freeback pad3' bindtap='clickFreeBackBtn' id='inquiry_click_freeback'>
+                <text class='icon-putaway'></text>
+                意见反馈
+            </view>
+        </view>
+
+    </view>
+</template>
+
+<!--用户气泡-->
+<template name="patient">
+    <view class="inquiry-patient dialog">
+        <view bindtap='reSend' wx:if='{{ index==datalistLen-1 && networkErr }}'>
+            <icon type="warn" size="28" />
+        </view>
+        <view class="topic">
+            <view wx:for="{{answer}}" wx:for-index="idx" wx:key="idx">
+                <view wx:if="{{item.type=='text'}}" class='comPad' style="text-align:{{item.value.length>3?'left':'center'}};work-wrap:break-word">
+                    {{item.value}}
+                </view>
+                <view class='imgWrap' wx:elif="{{item.type=='image'}}">
+                    <image class='image' src='{{item.value.image}}'></image>
+                    <!-- <image class='image' src='../../images/1.png'></image> -->
+                    <text class='text ell'>{{item.value.altText}}</text>
+                </view>
+            </view>
+        </view>
+    </view>
+</template>
+
+<!-- footer singleOpt -->
+<template name="footerSingleOpt">
+    <view class='singleOpt positR' data-key='{{options[0].key}}' data-commandId='{{options[o].commandId}}' data-text="{{options[0].text}}" bindtap='clickSingleOpt'>
+        <view class='imgCont'>
+            {{options[0].text}}
+        </view>
+        <view class='imgWrap'>
+            <image src='../../images/btnBg.jpg'></image>
+        </view>
+    </view>
+</template>
+
+<!-- footer TwoOpt -->
+<template name="footerTwoOpt">
+    <view class='twoOpt' wx:for="{{options}}" wx:key='index' data-key='{{item.key}}' bindtap='clickTwoOpt'>
+        {{item.text}}
+    </view>
+</template>
+
+<!-- footer freetext -->
+<template name="footerFreeText">
+    <view class='freeText'>
+          <view class='inpWrap online'>  
+            <input value="{{freeTextVal}}" placeholder="{{options}}" class='textInpt' disabled='{{freeInpDisabled}}' auto-height bindconfirm='sendFreeText' bindinput='recordFreeText' maxlength='50' />
+        </view>
+        <view class='inpBtn' bindtap='sendFreeText'>
+            发送
+        </view>  
+    </view>
+</template>
+
+<!-- footer scroll -->
+<template name='footerScroll'>
+    <view class="scrollWrap">
+        <!-- <scroll-view class="scrollView" scroll-x="true">
+            <radio-group class="radio-group" bindchange="scrollViewRadioChange">
+                <view class="scrollViewBox {{item.checked?'active':''}}" wx:for="{{options}}" wx:key="index" bindtap='scrollViewClickImg' data-key="{{item.key}}">
+                    <radio class='radio' value="{{item.key}}" color='#41B8B0' checked="{{item.checked}}" />
+                    <image src="{{item.image}}" class="scrollViewImage"></image>
+                    <text class='text ell'>{{item.altText}}</text>
+                </view>
+            </radio-group>
+        </scroll-view> -->
+        <view class="scrollView">
+            <radio-group class="radio-group" bindchange="scrollViewRadioChange">
+                <view class="scrollViewBox udf_scroller {{item.checked?'active':''}}" wx:for="{{options}}" wx:key="index" bindtap='scrollViewClickImg' data-key="{{item.key}}">
+                    <radio class='radio' value="{{item.key}}" color='#41B8B0' checked="{{item.checked}}" />
+                    <image src="{{item.image}}" class="scrollViewImage"></image>
+                    <text class='text ell'>{{item.altText}}</text>
+                </view>
+            </radio-group>
+        </view>
+        <view class='sureBtn  positR' bindtap='sureScroll'>
+            <view class='imgCont'>
+                确认
+            </view>
+            <view class='imgWrap'>
+                <image src='../../images/btnBg.jpg'></image>
+            </view>
+        </view>
+    </view>
+</template>
+
+<!-- footer picker -->
+<template name='footerPicker'>
+    <view class='pickerWrap'>
+        <picker-view class='pickerView' indicator-style="height: 40px;" bindchange="pickerChange" value="{{defaultValue}}">
+            <picker-view-column>
+                <view class="pickerLi" wx:for="{{options}}" wx:key='index' style="height:40px;line-height:40px;">{{item.text}}</view>
+            </picker-view-column>
+        </picker-view>
+        <view class='sureBtn positR' bindtap='surePicker'>
+            <view class='imgCont'>
+                确认
+            </view>
+            <view class='imgWrap'>
+                <image src='../../images/btnBg.jpg'></image>
+            </view>
+        </view>
+    </view>
+</template>
+
+<!--化验列表-->
+<template name="labItem">
+    <view id="labItem-modal" class="{{options.length>0 && labModal?'show':'hide'}}">
+        <view class="scroll-wrap">
+            <scroll-view scroll-y style="height:100%;">
+                <view class="options" wx:for="{{options}}" wx:key="index">
+                    <view class="stem">
+                        {{index+1}}、{{item.text}}
+                    </view>
+                    <radio-group class="radio-group" bindchange="labOptsChange" data-idx="{{index}}" data-answer="{{item.answer}}">
+                        <label class="radio" wx:for="{{item.options}}" wx:key="value" wx:for-item="radioItems">
+                            <radio value="{{radioItems.key}}" color="#41B8B0" /> {{radioItems.text}}
+                        </label>
+                    </radio-group>
+                </view>
+            </scroll-view>
+        </view>
+        <view class="btn-group" style="display:{{options.length>0 && labModal?'flex':'none'}}">
+            <view class="cancel cancelLab" bindtap="cancelLab" id='inquiry_click_cancelLab'>未做过以上化验</view>
+            <view class="sure submitLab" bindtap="sureLab" style="background:#41B8B0;color:#fff;" id='inquiry_click_sureLab'>确定</view>
+        </view>
+    </view>
+</template>
+
+<!-- 错误提示 -->
+<template name='errorMsg'>
+    <view class='errorMsg'>
+        {{errorMsg}}
+    </view>
+</template>
+
+<!-- 创建昵称 -->
+<template name="saveNickModal">
+    <view id="saveLogMask"></view>
+    <view id="saveLogModal">
+        <view class="cont">
+            <view class="title">创建昵称</view>
+            <view class="describe">
+                <view>为测评对象创建昵称，</view>
+                <view>也可直接保存。</view>
+            </view>
+            <input type='text' placeholder="请输入昵称" focus='true' confirm-type="done" bindinput="sureNickname" placeholder-class="setNickname" />
+
+        </view>
+        <view class="modalFooter">
+            <view class="cancel" bindtap="cancelSaveResult">取消</view>
+            <view class="sure" bindtap="clickSureSaveResult">确定</view>
+        </view>
+    </view>
+</template>
+<!-- 用户协议 -->
+<template name="protocol">
+    <view class='protocol'>
+        <scroll-view scroll-y>
+            <view style="font-weight:900;text-align:center;text-indent:0;">大数健康系统使用条款（下称“使用条款“）</view>
+            <view>使用条款构成您和北京大数医达科技有限公司（下称“大数医达”）之间的法律协议条款，它还规定了您的权利与义务与我们的权利与义务。</view>
+            <view style="font-weight:900">最后修订：2017年7月2日</view>
+            <view style="font-weight:900">概述</view>
+            <view>大数健康系统是大数医达旗下一款在线健康测评辅助系统（下称“智能测评”）。</view>
+            <view>本使用条款是您与大数医达之间有关使用智能测评的协议条款。访问或使用智能测评，即表示您已阅读、理解并同意受这些条款的约束，同意遵守所有适用的法律和法规。如果您不同意这些条款，请勿使用智能测评。</view>
+            <view>智能测评并非医疗机构，其给出的建议都是基于您输入的有限数据以及医疗大数据模型算法，任何该等建议不但不代表大数医达同意其说法，亦不能替代执业医师的真实诊疗和医嘱。</view>
+            <view>大数医达可随时修改这些“使用条款”以及智能测评中包含的任何其他信息，而无需通知您。大数医达还可随时对智能测评系统中功能、服务或程序作出改进或更改，而无需事先通知您。</view>
+            <view style="font-weight:900">一般条款</view>
+            <view>使用条款还包含所有权/版权申明和隐私条款，您除了必须遵守使用条款，还必须服从所有权/版权申明以及隐私条款。所有权/版权申明和隐私条款，请点击题为“所有权/版权申明”和“隐私条款”的标签。</view>
+            <view>在您同意遵守使用条款、相关法律规定的前提下，大数医达授予您一份非专属的、不可转让的有限许可，允许您作为用户访问和使用智能测评。此项许可不包括您恶意使用智能测评，或为了任何侵权的目的使用智能测评。</view>
+            <view>除了上一段所述的有限许可权，大数医达并未授予您任何明示或默示的专利、商标、版权或其他专有权、知识产权的权利或许可。您不得在另一个网站或移动端应用或任何其他介质中使用或复制智能测评的任何内容。如果您未能遵守使用条款，将会导致授予您的任何权利被自动终止，而无需事先通知，并且您必须立即停止使用智能测评并销毁持有、保管或控制的所有智能测评资料。</view>
+            <view style="font-weight:900">免责声明</view>
+            <view>使用智能测评的所有风险由您自行承担。</view>
+            <view>智能测评并非医疗机构，其给出的建议系基于您输入的有限数据以及医疗大数据模型算法，任何该等建议不但不代表大数医达同意其说法，且大数医达对任何该等建议不做任何保证，对该等建议或由其造成的后果亦不承担任何责任。</view>
+            <view>智能测评是一个在线系统，对于因不可抗力或不能控制的原因造成的网络服务中断或其它缺陷，大数医达不承担任何责任。</view>
+            <view>智能测评有时可能会包含不准确的技术信息或文字错误，我们对任何发布信息的准确性不作任何保证。</view>
+            <view>所有资料、信息、产品、软件、程序和服务均“按现状”提供，大数医达对此不提供任何形式的保证或担保。大数医达明确免除法律所允许的最大范围内的所有明示的、默示的、法定的及其他保证、担保或陈述，包括但不限于有关适销性、适用于某种特定用途、不侵犯所有权和知识产权的保证。不存在任何限制，大数医达不保证智能测评将连续运行、及时、安全或无错误。</view>
+            <view style="font-weight:900">保密信息</view>
+            <view>大数医达并不希望通过智能测评接收您的保密信息或专有信息。您同意您在智能测评上输入的所有信息或资料都将被视为非保密信息。将任何信息或资料发送给大数医达，即表示您就该等信息与资料授予大数医达不受限制的、不可撤销的使用许可。</view>
+            <view style="font-weight:900">业务关系</view>
+            <view>智能测评可能提供非大数医达网址和资源的链接或引用。大数医达对于引用的，或可从智能测评进行访问的，或链接到任何智能测评的任何非大数医达网址或第三方资源不作任何声明、保证、认可或其他承诺。</view>
+            <view style="font-weight:900">责任限制</view>
+            <view>在适用法律允许的最大范围内，在任何情况下，对于与智能测评有关的、由智能测评引起的或使用智能测评、使用通过智能测评链接到的、引用的或访问的任何站点或资源，或者使用、下载或访问任何上述站点的资料、信息、产品或服务而造成的任何直接的、间接的、附带的、特别的、惩罚性的或其他后果性的损害，大数医达均不对任何一方负责。</view>
+        </scroll-view>
+    </view>
+</template>
+<!--基本信息  -->
+ <template name="essentialnformation"> 
+    <view class='essentia-information-wrap'>
+        <view class='essentia-info-head'></view>
+        <view class='essentia-info-content'>
+          <!-- header img-->
+          <image src="../../images/robot.png" class="header-image"></image> 
+          <view class='essentia-info-title'>
+            <text class='info-title-num'>1</text>
+            <text>基本信息(必填)</text>
+          </view>
+          <view class='clearfix essentia-info-sexy'>
+            <!-- <view wx:for="{{sexyList}}" wx:key="index" data-id="index"
+            class="fll essentia-info{{currentSexy==index?'sexy-active':''}}">{{item.sexy}}</view>         -->
+               <view class="fll essentia-info {{currentSexy=='man'?'sexy-active':''}}" bindtap='changeSexyMan'>男</view>
+              <view class="fll essentia-info {{currentSexy=='women'?'sexy-active':''}}" bindtap='changeSexyWomen'>女</view> 
+          </view>
+          <view class='essentia-info-classification'>年龄</view>
+            <block wx:for="{{controls}}" wx:key="id" wx:for-item="v">
+              <view class="slide-item">
+                  <view wx:if="{{sliderVal==''}}">36</view>
+                  <view wx:else>{{sliderVal}}</view>
+                  <view class="slidewrap">
+                    <view class="s-con-reduce" bindtap="minusCount" data-id="{{v.id}}">-</view>
+                    <view class="s-con-add" data-max="{{v.max}}" bindtap="addCount" data-id="{{v.id}}">+</view>
+                    <slider class="slide" bindchange="sliderchange" step="1" max="{{v.max}}" min="0" backgroundColor='#ccc' activeColor='#000' handleColor='red' block-size="16" value="{{v.value}}" />
+                    <view class="s-con-add" data-max="{{v.max}}" bindtap="addCount" data-id="{{v.id}}">+</view>
+                  </view>
+              </view>
+            </block>  
+            <!-- 生命体征 -->
+            <view class='essentia-info-title'>
+              <text class='info-title-num'>2</text>
+              <text>生命体征(选填)</text>
+            </view>
+            <view class='vital-sign-list'>
+              <view class='normal-sign' bindtap='showHeightSign' wx:if="{{!showSignFlag}}">身高</view>
+              <view class='clearfix active-sign-all' wx:else>
+                <view class='clearfix active-sign fll'>
+                  <text class='fll'>身高(cm)</text>
+                  <view class="section flr">
+                      <input type="number" placeholder="123" focus maxlength="3" value='{{inputHeightVal}}'/>
+                  </view>
+                </view>
+                <view class='fll hide-active-sign' bindtap='hideHeightSign'>X</view>
+              </view>
+              
+              <view class='normal-sign'>体重</view>
+              <view class='normal-sign'>体温</view>
+              <view class='normal-sign'>高压</view>
+              <view class='normal-sign'>低压</view>
+            </view>   
+          </view>  
+            
+        <!--footer  -->
+        <view class='essentia-info-foot'>确定</view>
+    </view>
+ </template> 

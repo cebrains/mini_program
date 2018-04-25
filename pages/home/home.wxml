@@ -13,6 +13,23 @@
       <input placeholder="这是一个可以自动聚焦的input" bindfocus='onStart'/>
   </view>
   <!-- <view class="grad">渐变shadow</view>  -->
-  <view class="animated {{isShowSymptom?'after-home-symptom-btn fadeInLeft':'home-symptom-btn'}}"> 通过列表输入症状</view> 
- </view>
+  <view class="animated {{isShowSymptom?'after-home-symptom-btn fadeInLeft':'home-symptom-btn'}}"> 
+     通过列表输入症状
+  </view> 
+
+  <view class="control-w " style='margin-top:200rpx'>
+    <block wx:for="{{controls}}" wx:key="id" wx:for-item="v">
+      <view class="slide-item">
+        <view class="itemName">{{v.name}}</view>
+        <view class="slidewrap">
+          <text class="s-con" data-id="{{v.id}}" bindtap="minusCount">-</text>
+          <slider class="slide" bindchange="sliderchange" step="1" value="{{v.value}}" data-id="{{v.id}}" max="{{v.max}}" min="0" backgroundColor='#ccc' activeColor='#000' handleColor='red' block-size="16"/>
+          <text class="s-con" data-id="{{v.id}}" data-max="{{v.max}}" bindtap="addCount">+</text>
+        </view>
+      </view>
+    </block>
+  </view>
+<!--end home-wrap  -->
+</view>
+
  

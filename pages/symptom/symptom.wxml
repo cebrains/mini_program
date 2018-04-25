@@ -1,10 +1,9 @@
 <!--index.wxml-->
 <!--<view class="container" id="symptom" style="padding-bottom:{{hasSel?'350rpx':'100rpx'}}">-->
 <view class="container" id="symptom">
-    <view class="{{isShowCar==true?'mask-show animated slideInUp':''}}" bindtap='hideMask'></view>
+    <view class="{{isShowCar?'mask-show':''}}" bindtap='hideMask'></view>
     <!--搜索-->
-    <template is='search' data="{{searchList,searchValue}}"></template>
-
+    <template is='search' data="{{searchList,searchValue,inputFlag,sercherStorage,StorageFlag,searchResultNull}}"></template>
     <!--列表-->
     <view class="cont">
         <!--分类-->
@@ -23,30 +22,8 @@
         </scroll-view>
     </view>
 
-    <!--footer-->
-    <!-- <view class="footer">
-        <view class="clearfix scrollV" style="height:{{hasSel?'250rpx':'0'}};bottom:{{hasSel?'100rpx':'0'}};overflow:auto;">
-            <view class="choice fll" catchtap="deleteChoice" wx:for="{{selected}}" wx:key="index" data-idx="{{index}}">
-                <text class='fll' style="display: inline-block;margin-right: 10rpx;">{{item.text}}</text>
-                <text class="flr icon common icon-qingchu" style="margin-top: 20rpx;"></text>
-
-            </view>
-        </view>
-        <view class="sure positR {{hasSel?'':'disabled'}}" bindtap="sure" id="symptom_click_sure">
-            <view class='imgCont'>
-                完成(<text>{{selected.length}}</text> 个症状)
-            </view>
-            <view class='imgWrap'>
-                <image src='../../images/btnBg.jpg'></image>
-            </view>            
-        </view>
-    </view> -->
-    <!--new footer  -->
-    <view class="footer">
-      <!-- 症状提示 -->
-         <view class="symptom-tip" style="height:{{tipFlag?'100rpx':'0'}};bottom:{{tipFlag?'100rpx':'0'}};">
-           <text>呕吐：一般发生在清晨啊，正常等哈多好</text>
-        </view> 
+    <!--footer  已选症状和查看详情-->
+    <view class="footer" wx:if="{{hasSel}}">
         <!--查看选择的症状  -->
         <view class="scrollV" style="overflow:auto;height:{{isShowCar?'250rpx':'0'}};bottom:{{isShowCar?'100rpx':'0'}};">
             <view catchtap="deleteChoice" wx:for="{{selected}}" wx:key="index" data-idx="{{index}}">
@@ -55,10 +32,11 @@
                 <view class="flr icon common icon-qingchu" style="margin-top: 20rpx;"></view>
               </view>                
             </view>
-        </view>
-        <view class="sure positR {{hasSel?'':'disabled'}} clearfix" id="symptom_click_sure">
+        </view> 
+         <!-- 显示已选症状 -->
+        <view class="sure positR {{hasSel?'':'disabled'}} clearfix  animated slideInUp" id="symptom_click_sure">
           <view class='buy-car-left fll'>
-            <text>{{selected.length}}</text> 个症状
+            <text>已选{{selected.length}}</text>个症状
             <view class='buy-car' bindtap='showMaskSymptomList'></view>
           </view>
           <view class='complate-right flr' catchtap="sure">
@@ -67,25 +45,44 @@
         </view>
     </view>
 </view>
-
+<!--顶部搜索  -->
 <template name="search">
     <view id='search'>
         <view class="search">
-            <text class="icommon icon-search"></text>
-            <input type="text" placeholder="请输入症状..." value="{{searchValue}}" bindinput="searchChange" />
+            <text class="icommon icon-search"></text>       
+            <input type="text" placeholder="搜索" value="{{searchValue}}" bindinput="searchChange" 
+            class="search-input-static" bindfocus='changeSearchState' bindconfirm="confirmValue"
+            style="width:{{inputFlag?'92%':'100%'}}"/>
+            <view class="cancel-search-text animated {{inputFlag?'show slideInRight':'hide'}}" bindtap='cancelSearchState'>取消</view> 
         </view>
-        <!-- <view class="mask" style="display:{{searchList.length>0?'block':'none'}}"> -->
-        <view class="mask" wx:if="{{searchList.length>0 && searchValue !='' }}">
+        <view class="mask" style="display:{{inputFlag?'block':'none'}}">
             <scroll-view scroll-y>
                 <view class="searchLi" wx:for="{{searchList}}" wx:key="id" bindtap="clickSearckList" data-id="{{item.id}}" data-name="{{item.name}}">
                     {{item.name}}
                 </view>
-            </scroll-view>
+            </scroll-view>         
         </view>
-        <view class="mask" wx:elif="{{ searchList.length==0 && searchValue != ''}}" bindtap="clickSearchMask">
+        <view class="mask" wx:if="{{searchResultNull}}" bindtap="clickSearchMask">
             <view style="line-height:300rpx;text-align:center;color:#999;">
                 没有找到您要的症状
             </view>
+        </view> 
+         <!--part2 focus -->
+        <view style="display:{{inputFlag && StorageFlag?'block':'none'}}">
+          <!--常见症状  -->
+          <view class='search-history'>常见症状</view> 
+          <!--搜索历史  -->
+          <view class='search-history' wx:if="{{sercherStorage.length>0}}">
+            <view class='clearfix' style='margin-bottom:30rpx;'>
+              <text class='fll search-history-title'>搜索历史</text>
+              <text class='flr search-history-title-spe' bindtap="clearSearchStorage">清除历史</text>
+            </view>
+            <view class='search-history-list clearfix'>
+                <view class='search-history-item fll' wx:for="{{sercherStorage}}" wx:key="name" bindtap="clickSearcItem" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>          
+            </view>
+          </view>
+          
         </view>
+                
     </view>
 </template>

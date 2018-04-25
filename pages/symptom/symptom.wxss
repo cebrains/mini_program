@@ -2,44 +2,52 @@
 
 #search {
     height: 100rpx;
-    width: 100%;
+    width: 90%;
     background: #fff;
     border-bottom: 1px solid #eee;
     position: fixed;
     top: 0;
-    left: 0;
+    left:25rpx;
+    right:25rpx;
     z-index: 999;
     color: #333;
 }
-
-#search .search text {
+.cancel-search-text{
+  position:absolute;
+  right:-14rpx;
+  top:12rpx;
+  color:#333333;
+  font-size:29rpx;
+  letter-spacing:2rpx
+}
+#search .search .icon-search {
     position: absolute;
-    top: 37rpx;
-    left: 40rpx;
+    top: 18rpx;
+    left: 20rpx;
     font-size: 26rpx;
     color: #999;
     z-index: 10;
 }
-
-#search .search input {
-    height: 60rpx;
-    width: 94%;
-    margin: 20rpx auto 20rpx;
-    border: 1rpx solid #f7f7f7;
-    background: #f7f7f7;
-    font-size: 28rpx;
-    padding-left: 55rpx;
-    border-radius: 10rpx;
-    box-sizing: border-box;
+#search .search-input-static{
+  height: 60rpx;
+  border: 1rpx solid #f7f7f7;
+  background: #f7f7f7;
+  font-size: 28rpx;
+  padding-left: 55rpx;
+  border-radius: 10rpx;
+  box-sizing: border-box;  
 }
-
+#search .search-input-after {
+    width: 90%;
+}
 #search .mask {
-    position: fixed;
-    top: 102rpx;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #fff;
+  position: fixed;
+  top: 101rpx;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  z-index: 9999;
 }
 
 #search .mask scroll-view {
@@ -57,7 +65,7 @@
 /*内容区*/
 
 #symptom {
-    padding: 100rpx 0;
+    padding: 100rpx 0 0;
 }
 
 #symptom .cont {
@@ -86,7 +94,7 @@
 }
 
 #symptom .cont .left-tab .sort-list.active {
-    color: #3d83b8;
+    color: #0FA3DA;
     border-right: none;
     font-weight: bold;
 }
@@ -106,9 +114,7 @@
 }
 
 #symptom .cont .right-cont .ri-list .active {
-    color: #3d83b8;
-    border: 2rpx solid #3d83b8;
-    border-radius: 40rpx;
+    color: #0FA3DA;
 }
 
 /*footer*/
@@ -145,11 +151,11 @@
     bottom: 100rpx;
     padding-left:50rpx;
     box-sizing: border-box;
-    /* background: rgba(42, 63, 84, 0.8); */
+     background: rgba(42, 63, 84, 0.8); 
     transition: 1s;
-    background:#ccc;
+    background:#fff;
     color:#000;
-    z-index:99999;
+    z-index:999;
 }
 
 #symptom .footer .choice {
@@ -164,7 +170,7 @@
 }
 /*新增样式  */
 .buy-car-left{
-  background:#888;
+  background:#2E3740;
   width:70%;
   color:#fff;
   position:relative;
@@ -172,7 +178,7 @@
 .buy-car{
   width:100rpx;
   height:100rpx;
-  background:#333;
+  background:#4D5965;
   position:absolute;
   left:50rpx;
   top:-20rpx;
@@ -180,7 +186,7 @@
 }
 .buy-car-list{
   width:96%;
-  border-bottom:1px solid #ccc;
+  border-bottom:1px solid #D8D8D8;
   height:70rpx;
   line-height:70rpx;
 }
@@ -190,19 +196,35 @@
   bottom: 100rpx;
   left: 0;
   right: 0;
-  background:red;
-  opacity:0.5;
+  background:rgba(46, 55, 64, 0.7);
   z-index: 9999;
-}
-.container{
-  position:relative
 }
 .complate-right{
   width:30%;
 }
-.symptom-tip{
-  background:blueviolet;
-  position:absolute;
-  width:100%;
-  padding-left:40rpx;
+/*搜索历史  */
+.search-history{
+  position:relative;
+  z-index:9999;
+  margin-top:100rpx;
+}
+.search-history-title{
+  color:#333;
+  font-size:32rpx;
+}
+.search-history-title-spe{
+  color:#999999;
+  font-size:24rpx
+}
+.search-history-item{
+  background:#F1F1F1;
+  font-size:28rpx;
+  color:#333;
+  padding:4rpx 30rpx;
+  text-align:center;
+  line-height:56rpx;
+  height:56rpx;
+  border-radius:40rpx;
+  margin-right:24rpx;
+  margin-top:10rpx;
 }

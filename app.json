@@ -1,6 +1,6 @@
 {
-  "pages": [
-    
+  "pages": [   
+    "pages/main/main",
     "pages/inquiry/inquiry",
     "pages/feedback/feedback",
     "pages/recordDetail/recordDetail",

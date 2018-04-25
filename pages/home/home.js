@@ -15,7 +15,15 @@ Page({
     isAfterCard:false,
     change2Bottom:{},
     isDown:false,
-    isShowSymptom:false
+    isShowSymptom:false,
+    controls: [
+      {
+        id: 1,
+        name: '功能一',
+        value: 0,
+        max: 200
+      }
+    ]
   }, 
   onLoad: function () {
     console.log('onLoad')
@@ -75,6 +83,54 @@ Page({
     this.setData({
       isShowSymptom:true
     })
+  },
+  // 控制加
+  addCount: function (event) {
+    let data = event.currentTarget.dataset
+    let controls = this.data.controls
+    let control = controls.find(function (v) {
+      return v.id == data.id
+    })
+    let control1 = controls.find(function (v) {
+      return v.max == data.max
+    })
+
+    if (control.value > control1.max)
+      return
+    control.value += 0.5;
+    this.setData({
+      'controls': controls
+    })
+  },
+  // 控制减
+  minusCount: function (event) {
+    let data = event.currentTarget.dataset;
+    let controls = this.data.controls;
+    let control = controls.find(function (v) {
+      return v.id == data.id
+    })
+    if (control.value <= 0){
+      return
+    }     
+    control.value -= 1;
+    this.setData({
+      'controls': controls
+    })
+  },
+  //拖动
+  sliderchange: function (e) {
+    console.log('slider change，值:', e)
+    let data = e.currentTarget.dataset;
+    let controls = this.data.controls;
+    console.log(data, controls, e.detail.value)
+    let control = controls.find(function (v) {
+      v.id == data.id
+      v.value = e.detail.value
+    })
+    this.setData({
+      'controls': controls
+    })
+    console.log(controls)
   }
 
 })

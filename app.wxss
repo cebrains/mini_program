@@ -1,7 +1,7 @@
 /*引入动画效果*/
 @import "common/animate.wxss";
 /**app.wxss**/
-.container {
+ .container {
     height: 100%;
     width: 100%;
     position: absolute;
@@ -10,7 +10,7 @@
     font-size: 32rpx;
     font-weight: PingFang SC;
     overflow-x: hidden;
-}
+} 
 .com-pad {
     padding: 0 10rpx;
 }
@@ -34,7 +34,13 @@
 .clearfix:after {
     clear: both;
 }
+.hide{
+  display:none;
+}
 
+.show{
+  display:block;
+}
 .ell {
     display: block;
     white-space: nowrap;
@@ -261,3 +267,35 @@
 .icon-zhengzhuang:before {
   content: "\e91d";
 }
+ 
+
+/**app.wxss**/
+/* .container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80rpx 0;
+  box-sizing: border-box;
+  font-size: 30rpx;
+  color: #999;
+}  */
+
+/* .container view {
+  margin-top: 30rpx;
+} */
+
+ .intro {
+  margin-top: 30rpx;
+  width: 700rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+} 
+
+.container button {
+  margin-top: 30rpx;
+}
+

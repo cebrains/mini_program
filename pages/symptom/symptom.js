@@ -10,14 +10,15 @@ Page({
         sort: [],
         currentSortIdx: 0,
         selected: [],
-        hasSel:  false,
-
-        // cartMask: false,
-
+        hasSel: false,
         searchList: [],
-        searchValue: '',
+        searchValue: '', //搜索框输入的值
         isShowCar:false,
-        tipFlag:false
+        tipFlag:false,
+        inputFlag:false,
+        sercherStorage: [], //搜索内容存储
+        StorageFlag:true,
+        searchResultNull:false //changeSearchState事件返回的结果是否为空
     },
     
     onLoad() {
@@ -108,12 +109,10 @@ Page({
         _selected.splice(idx, 1);
 
         if (_selected.length == 0) {
-            // this.clickCartMask()
           this.setData({
             isShowCar:false
           })
         }
-
         this.setData({
             selected: _selected,
             hasSel: _selected.length > 0 ? true : false,
@@ -151,13 +150,13 @@ Page({
             len = inquiryDataList.length;
 
         if (selected.length == 0) {
-            wx.showModal({
-                content: '请选择症状表现',
-                showCancel: false,
-                confirmText: '知道了',
-                confirmColor: '#41B8B0'
-            })
-            return;
+            // wx.showModal({
+            //     content: '请选择症状表现',
+            //     showCancel: false,
+            //     confirmText: '知道了',
+            //     confirmColor: '#41B8B0'
+            // })
+            // return;
         }
 
         selected.map(function (val, idx) {
@@ -193,12 +192,50 @@ Page({
     },
 
     // search部分
-    searchChange(e) {
-        let self = this;
-        let {value} = e.detail;
-
+    changeSearchState(e){
+      this.setData({
+        searchList:[],
+        StorageFlag:true,
+        inputFlag: true,
+        hasSel:false,
+        searchResultNull:false,
+        sercherStorage: wx.getStorageSync('searchDataVal') || [],
+      })
+    },
+    cancelSearchState() {
+      if (this.data.selected.length>0){
         this.setData({
-            searchValue: value
+          hasSel: true
+        })
+      } else{
+        this.setData({
+          hasSel: false
+        })
+      }
+      this.setData({
+        inputFlag: false,
+        searchValue:''
+      })
+    },
+    //清楚输入框数据
+    // clearInput: function () {
+    //   this.setData({
+    //     sercherStorage:[]
+    //   })
+    // },
+    //清楚缓存历史并关闭历史搜索显示
+    clearSearchStorage: function () {
+      wx.removeStorageSync('searchDataVal')
+      this.setData({
+        sercherStorage: []
+      })
+    },
+    searchChange(e) {     
+        let self = this;
+        let { value } = e.detail;
+        this.setData({
+          searchValue: value,
+          StorageFlag:false,
         })
 
         if (value == "") {
@@ -208,6 +245,23 @@ Page({
             return;
         }
         self.searchFetch(value);
+    },
+    //点击搜索历史里面的item
+    clickSearcItem(e){      
+      let self = this;
+      let value = e.currentTarget.dataset.id;
+      this.setData({
+        searchValue:value,
+        StorageFlag: false
+      })
+
+      if (value == "") {
+        this.setData({
+          searchList: []
+        })
+        return;
+      }
+      self.searchFetch(value);
     },
     searchFetch: function (value) {
         let self = this;
@@ -223,16 +277,40 @@ Page({
         symptomSearchFetch(params)
     },
 
-    searchSuccess: function (data) {
+    searchSuccess: function (data) {     
         if(JSON.stringify(data)=="{}" || data.items.length==0){
             this.setData({
-                searchList: []
+                searchList: [],
+                searchResultNull:true
             })
             return;
-        }
+        }       
         this.setData({
-            searchList: data.items
+          searchList: data.items
         })
+    },
+    //搜索确认
+    confirmValue(){      
+      if (this.data.searchValue != '') {
+        let self=this;
+        self.searchFetch(this.data.searchValue);
+        //将搜索记录更新到缓存
+        let searchDataVal = this.data.sercherStorage;
+        searchDataVal.push({
+          id: this.data.searchValue,
+          name: this.data.searchValue
+        })
+        let searchDataValLength = searchDataVal.length;
+        if (searchDataValLength > 6){
+          searchDataVal=searchDataVal.slice(searchDataValLength - 6)
+        }
+        
+        wx.setStorageSync('searchDataVal', searchDataVal);
+        this.setData({
+          StorageFlag: false
+        })
+        //self.clickSearckList()
+      }
     },
     clickSearckList: function (e) {
         let {id, name} = e.currentTarget.dataset;
@@ -246,10 +324,17 @@ Page({
         let {selected, list} = this.data;
         let _selected = JSON.parse(JSON.stringify(selected)),
             _list = JSON.parse(JSON.stringify(list));
-
+        
         for (let i = 0; i < _selected.length; i++) {
             if (_selected[i].id == id) {
-                return;
+              console.log('已选择', this.data.hasSel)
+              this.setData({               
+                searchValue:'',
+                inputFlag: false,
+                hasSel:true,
+                //searchList: [],
+              })
+              return;
             }
         }
         for (let i = 0; i < _list.length; i++) {
@@ -258,13 +343,13 @@ Page({
             }
         }
         _selected.push(json);
-
         this.setData({
             selected: _selected,
             hasSel: _selected.length > 0 ? true : false,
             searchList: [],
             searchValue: '',
-            list:_list
+            list:_list,
+            inputFlag:false
         })
 
     },
